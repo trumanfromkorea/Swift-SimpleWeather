@@ -11,10 +11,13 @@ class DetailsViewController: UIViewController {
     
     static let identifier = "DetailsViewController"
     static let storyboard = "Main"
+    
+    var weatherInfo: WeatherModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        print(weatherInfo)
     }
     
 }

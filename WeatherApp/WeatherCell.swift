@@ -10,9 +10,15 @@ import UIKit
 class WeatherCell: UICollectionViewCell {
     static let identifier = "WeatherCell"
 
-    @IBOutlet var cityNameLabel: UILabel!
-
+    @IBOutlet var koreanNameLabel: UILabel!
+    @IBOutlet weak var englishNameLabel: UILabel!
+    @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var humidityLabel: UILabel!
+    
     func configure(_ weather: WeatherModel) {
-        cityNameLabel.text = CityModel.cities.first { $0.id == weather.id }?.koreanName
+        koreanNameLabel.text = CityModel.cities.first { $0.id == weather.id }?.koreanName
+        englishNameLabel.text = weather.cityName
+        tempLabel.text = "\(Int(weather.main.temp))°C"
+        humidityLabel.text = "\(weather.main.humidity)%"
     }
 }

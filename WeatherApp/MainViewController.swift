@@ -24,8 +24,12 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.title = "전국 날씨"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.sizeToFit()
 
-        configureBackground()
+//        configureBackground()
 
         requestWeatherForCities()
 
@@ -36,6 +40,17 @@ class MainViewController: UIViewController {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: "BG_default")
         backgroundImage.contentMode = .scaleAspectFill
+        
+        // create effect
+        let effect = UIBlurEffect(style: .systemUltraThinMaterialLight)
+        let effectView = UIVisualEffectView(effect: effect)
+
+        // set boundry and alpha
+        effectView.frame = backgroundImage.bounds
+        effectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        effectView.alpha = backgroundImage.alpha
+        
+        backgroundImage.addSubview(effectView)
         view.insertSubview(backgroundImage, at: 0)
     }
 
@@ -43,7 +58,10 @@ class MainViewController: UIViewController {
         // delegate
         collectionView.delegate = self
 
-        collectionView.backgroundColor = .white.withAlphaComponent(0.7)
+        // ui
+//        collectionView.backgroundColor = .white.withAlphaComponent(0.7)
+//        collectionView.layer.cornerRadius = 15
+        collectionView.showsVerticalScrollIndicator = false
 
         // dataSource
         dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
@@ -83,7 +101,6 @@ class MainViewController: UIViewController {
 
 extension MainViewController {
     func requestWeatherForCities() {
-        
         let url = Server.getUrlWithCities(cities)
         let semaphore = DispatchSemaphore(value: 0)
 
@@ -107,9 +124,9 @@ extension MainViewController {
             result.list.forEach { item in
                 self.weatherList.append(item)
             }
-            
+
             semaphore.signal()
-            
+
         }).resume()
 
         semaphore.wait()
@@ -117,4 +134,13 @@ extension MainViewController {
 }
 
 extension MainViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: DetailsViewController.storyboard, bundle: nil)
+
+        let vc = storyboard.instantiateViewController(withIdentifier: DetailsViewController.identifier) as! DetailsViewController
+        
+        vc.weatherInfo = weatherList[indexPath.item]
+
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
