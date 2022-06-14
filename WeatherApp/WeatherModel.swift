@@ -36,7 +36,12 @@ struct Location {
 
 // 도시이름, 날씨아이콘, 현재기온, 현재습도
 // 체감기온, 최저기온, 최고기온, 기압, 풍속, 날씨 설명
-struct WeatherInfo: Codable {
+struct WeatherInfo: Codable, Hashable {
+    
+    static func == (lhs: WeatherInfo, rhs: WeatherInfo) -> Bool {
+        return lhs.cityName == rhs.cityName
+    }
+    
     var cityName: String
     var weather: [WeatherData]
     var main: MainData
@@ -50,14 +55,14 @@ struct WeatherInfo: Codable {
     }
 }
 
-struct WeatherData: Codable {
+struct WeatherData: Codable, Hashable {
     var id: Int
     var main: String
     var description: String
     var icon: String
 }
 
-struct MainData: Codable {
+struct MainData: Codable, Hashable {
     var temp: Double
     var sensibleTemp: Double
     var minTemp: Double
@@ -75,6 +80,6 @@ struct MainData: Codable {
     }
 }
 
-struct WindData: Codable {
+struct WindData: Codable, Hashable {
     var speed: Double
 }

@@ -11,16 +11,25 @@ class MainViewController: UIViewController {
     static let identifier = "MainViewController"
     static let storyboard = "Main"
 
+    typealias Item = WeatherInfo
+    enum Section {
+        case main
+    }
+
+    var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     let cityList = Location.cityList
     var weatherInfoList = [WeatherInfo]()
 
-    @IBOutlet weak var collectionView: UICollectionView!
-    
+    @IBOutlet var collectionView: UICollectionView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureBackground()
+
         requestWeatherForCities()
+        
+        configureCollectionView()
     }
 
     private func configureBackground() {
@@ -28,6 +37,43 @@ class MainViewController: UIViewController {
         backgroundImage.image = UIImage(named: "BG_default")
         backgroundImage.contentMode = .scaleAspectFill
         view.insertSubview(backgroundImage, at: 0)
+    }
+
+    private func configureCollectionView() {
+        // delegate
+        collectionView.delegate = self
+
+        // dataSource
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCell.identifier, for: indexPath) as? WeatherCell else {
+                return nil
+            }
+
+            cell.configure(itemIdentifier)
+
+            return cell
+        })
+
+        // snapshot
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(weatherInfoList, toSection: .main)
+        dataSource.apply(snapshot)
+
+        // layout
+        collectionView.collectionViewLayout = configureLayout()
+    }
+
+    private func configureLayout() -> UICollectionViewCompositionalLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.33))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.33))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
+
+        let section = NSCollectionLayoutSection(group: group)
+
+        return UICollectionViewCompositionalLayout(section: section)
     }
 }
 
@@ -37,6 +83,7 @@ extension MainViewController {
     func requestWeatherForCities() {
         for city in cityList {
             let url = Server.getUrlWithCity(city)
+            let semaphore = DispatchSemaphore(value: 0)
 
             URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, _, error in
                 guard let data = data, error == nil
@@ -56,8 +103,14 @@ extension MainViewController {
                 guard let result = responseData else { return }
 
                 self.weatherInfoList.append(result)
+                semaphore.signal()
 
             }).resume()
+            
+            semaphore.wait()
         }
     }
+}
+
+extension MainViewController: UICollectionViewDelegate {
 }
