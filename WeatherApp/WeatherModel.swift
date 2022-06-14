@@ -7,47 +7,55 @@
 
 import Foundation
 
-struct Location {
+struct CityModel {
+    var id: Int
+    var koreanName: String
+
     // 공주, 광주, 구미, 군산, 대구, 대전, 목포, 부산, 서산, 서울,
     // 속초, 수원, 순천, 울산, 익산, 전주, 제주시, 천안, 청주, 춘천
-    static let cityList = [
-        "Gongju",
-        "Gwangju",
-        "Gumi",
-        "Gunsan",
-        "Daegu",
-        "Daejeon",
-        "Mokpo",
-        "Busan",
-        "Seosan",
-        "Seoul",
-        "Sokcho",
-        "Suwon",
-        "Suncheon",
-        "Ulsan",
-        "Iksan",
-        "Jeonju",
-        "Jeju",
-        "Cheonan",
-        "Cheongju",
-        "Chuncheon",
+    static let cities = [
+        CityModel(id: 1842616, koreanName: "공주"),
+        CityModel(id: 1841811, koreanName: "광주"),
+        CityModel(id: 1842225, koreanName: "구미"),
+        CityModel(id: 1842025, koreanName: "군산"),
+        CityModel(id: 1835327, koreanName: "대구"),
+        CityModel(id: 1835224, koreanName: "대전"),
+        CityModel(id: 1841066, koreanName: "목포"),
+        CityModel(id: 1838524, koreanName: "부산"),
+        CityModel(id: 1835895, koreanName: "서산"),
+        CityModel(id: 1835848, koreanName: "서울"),
+        CityModel(id: 1836553, koreanName: "속초"),
+        CityModel(id: 1835553, koreanName: "수원"),
+        CityModel(id: 1835648, koreanName: "순천"),
+        CityModel(id: 1833747, koreanName: "울산"),
+        CityModel(id: 1843491, koreanName: "익산"),
+        CityModel(id: 1845457, koreanName: "전주"),
+        CityModel(id: 1846266, koreanName: "제주"),
+        CityModel(id: 1845759, koreanName: "천안"),
+        CityModel(id: 1845604, koreanName: "청주"),
+        CityModel(id: 1845136, koreanName: "춘천"),
     ]
 }
 
 // 도시이름, 날씨아이콘, 현재기온, 현재습도
 // 체감기온, 최저기온, 최고기온, 기압, 풍속, 날씨 설명
-struct WeatherInfo: Codable, Hashable {
-    
-    static func == (lhs: WeatherInfo, rhs: WeatherInfo) -> Bool {
-        return lhs.cityName == rhs.cityName
+struct WeatherResponse: Codable, Hashable {
+    var list: [WeatherModel]
+}
+
+struct WeatherModel: Codable, Hashable {
+    static func == (lhs: WeatherModel, rhs: WeatherModel) -> Bool {
+        return lhs.id == rhs.id
     }
-    
+
+    var id: Int
     var cityName: String
     var weather: [WeatherData]
     var main: MainData
     var wind: WindData
 
     private enum CodingKeys: String, CodingKey {
+        case id
         case cityName = "name"
         case weather
         case main

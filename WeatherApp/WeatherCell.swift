@@ -9,11 +9,10 @@ import UIKit
 
 class WeatherCell: UICollectionViewCell {
     static let identifier = "WeatherCell"
-    
-    @IBOutlet weak var cityNameLabel: UILabel!
-    
-    func configure(_ weatherInfo: WeatherInfo) {
-        cityNameLabel.text = weatherInfo.cityName
+
+    @IBOutlet var cityNameLabel: UILabel!
+
+    func configure(_ weather: WeatherModel) {
+        cityNameLabel.text = CityModel.cities.first { $0.id == weather.id }?.koreanName
     }
-    
 }

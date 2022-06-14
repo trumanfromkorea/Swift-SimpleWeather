@@ -11,14 +11,14 @@ class MainViewController: UIViewController {
     static let identifier = "MainViewController"
     static let storyboard = "Main"
 
-    typealias Item = WeatherInfo
+    typealias Item = WeatherModel
     enum Section {
         case main
     }
 
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
-    let cityList = Location.cityList
-    var weatherInfoList = [WeatherInfo]()
+    let cities = CityModel.cities
+    var weatherList = [WeatherModel]()
 
     @IBOutlet var collectionView: UICollectionView!
 
@@ -28,7 +28,7 @@ class MainViewController: UIViewController {
         configureBackground()
 
         requestWeatherForCities()
-        
+
         configureCollectionView()
     }
 
@@ -42,6 +42,8 @@ class MainViewController: UIViewController {
     private func configureCollectionView() {
         // delegate
         collectionView.delegate = self
+
+        collectionView.backgroundColor = .white.withAlphaComponent(0.7)
 
         // dataSource
         dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
@@ -57,7 +59,7 @@ class MainViewController: UIViewController {
         // snapshot
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(weatherInfoList, toSection: .main)
+        snapshot.appendItems(weatherList, toSection: .main)
         dataSource.apply(snapshot)
 
         // layout
@@ -81,34 +83,36 @@ class MainViewController: UIViewController {
 
 extension MainViewController {
     func requestWeatherForCities() {
-        for city in cityList {
-            let url = Server.getUrlWithCity(city)
-            let semaphore = DispatchSemaphore(value: 0)
+        
+        let url = Server.getUrlWithCities(cities)
+        let semaphore = DispatchSemaphore(value: 0)
 
-            URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, _, error in
-                guard let data = data, error == nil
-                else {
-                    print("something went wrong")
-                    return
-                }
+        URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, _, error in
+            guard let data = data, error == nil
+            else {
+                print("something went wrong")
+                return
+            }
 
-                var responseData: WeatherInfo?
+            var responseData: WeatherResponse?
 
-                do {
-                    responseData = try JSONDecoder().decode(WeatherInfo.self, from: data)
-                } catch {
-                    print("error \(error)")
-                }
+            do {
+                responseData = try JSONDecoder().decode(WeatherResponse.self, from: data)
+            } catch {
+                print("error \(error)")
+            }
 
-                guard let result = responseData else { return }
+            guard let result = responseData else { return }
 
-                self.weatherInfoList.append(result)
-                semaphore.signal()
-
-            }).resume()
+            result.list.forEach { item in
+                self.weatherList.append(item)
+            }
             
-            semaphore.wait()
-        }
+            semaphore.signal()
+            
+        }).resume()
+
+        semaphore.wait()
     }
 }
 

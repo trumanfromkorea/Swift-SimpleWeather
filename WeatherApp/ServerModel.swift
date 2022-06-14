@@ -13,4 +13,17 @@ struct Server {
     static func getUrlWithCity(_ cityName: String) -> String {
         return "https://api.openweathermap.org/data/2.5/weather?q=\(cityName)&appid=\(apiKey)"
     }
+
+    static func getUrlWithCities(_ cities: [CityModel]) -> String {
+        var params = ""
+
+        for city in cities {
+            params += "\(city.id),"
+        }
+        params.removeLast()
+
+        let url = "http://api.openweathermap.org/data/2.5/group?id=\(params)&units=metric&appid=\(apiKey)"
+        
+        return url
+    }
 }
