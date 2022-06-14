@@ -138,6 +138,7 @@ extension MainViewController: UICollectionViewDelegate {
         let storyboard = UIStoryboard(name: DetailsViewController.storyboard, bundle: nil)
 
         let vc = storyboard.instantiateViewController(withIdentifier: DetailsViewController.identifier) as! DetailsViewController
+        vc.title = "지역 날씨"
         
         vc.weatherInfo = weatherList[indexPath.item]
 

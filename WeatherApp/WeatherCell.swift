@@ -18,7 +18,7 @@ class WeatherCell: UICollectionViewCell {
     func configure(_ weather: WeatherModel) {
         koreanNameLabel.text = CityModel.cities.first { $0.id == weather.id }?.koreanName
         englishNameLabel.text = weather.cityName
-        tempLabel.text = "\(Int(weather.main.temp))°C"
+        tempLabel.text = WeatherModel.generateTemp(weather.main.temp)
         humidityLabel.text = "\(weather.main.humidity)%"
     }
 }

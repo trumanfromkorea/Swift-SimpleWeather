@@ -44,10 +44,6 @@ struct WeatherResponse: Codable, Hashable {
 }
 
 struct WeatherModel: Codable, Hashable {
-    static func == (lhs: WeatherModel, rhs: WeatherModel) -> Bool {
-        return lhs.id == rhs.id
-    }
-
     var id: Int
     var cityName: String
     var weather: [WeatherData]
@@ -60,6 +56,14 @@ struct WeatherModel: Codable, Hashable {
         case weather
         case main
         case wind
+    }
+    
+    static func == (lhs: WeatherModel, rhs: WeatherModel) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    static func generateTemp(_ temp: Double) -> String {
+        return "\(Int(temp))°C"
     }
 }
 
