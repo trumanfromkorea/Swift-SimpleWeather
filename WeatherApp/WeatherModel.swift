@@ -95,3 +95,9 @@ struct MainData: Codable, Hashable {
 struct WindData: Codable, Hashable {
     var speed: Double
 }
+
+// DetailsCell 위한 인스턴스
+struct DetailsModel: Hashable {
+    var key: String
+    var value: String
+}

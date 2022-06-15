@@ -15,6 +15,20 @@ class WeatherCell: UICollectionViewCell {
     @IBOutlet weak var tempLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        contentView.backgroundColor = .tertiarySystemGroupedBackground.withAlphaComponent(0.8)
+        // Apply rounded corners
+        contentView.layer.cornerRadius = 15
+        contentView.layer.masksToBounds = true
+
+        // Set masks to bounds to false to avoid the shadow
+        // from being clipped to the corner radius
+        layer.cornerRadius = 15
+        layer.masksToBounds = false
+    }
+    
     func configure(_ weather: WeatherModel) {
         koreanNameLabel.text = CityModel.cities.first { $0.id == weather.id }?.koreanName
         englishNameLabel.text = weather.cityName

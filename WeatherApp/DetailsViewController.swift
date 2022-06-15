@@ -13,58 +13,50 @@ class DetailsViewController: UIViewController {
 
     var weatherInfo: WeatherModel?
 
-    let sampleList = [1, 2, 3, 4, 5, 6]
+    var detailsList = [DetailsModel]()
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
+
+    typealias Item = DetailsModel
+    enum Section {
+        case main
+    }
+
     @IBOutlet var collectionView: UICollectionView!
-
-    @IBOutlet var minTempLabel: UILabel!
-    @IBOutlet var maxTempLabel: UILabel!
-
     @IBOutlet var tempLabel: UILabel!
-    @IBOutlet var sensibleTempLabel: UILabel!
-    @IBOutlet var humidityLabel: UILabel!
-    @IBOutlet var pressureLabel: UILabel!
-    @IBOutlet var windLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.largeTitleDisplayMode = .never
+
+        configureDetailsInfo()
         configureCollectionView()
-        configureOutlets()
     }
 
-    private func configureOutlets() {
+    private func configureDetailsInfo() {
         if let weatherInfo = weatherInfo {
-            minTempLabel.text = WeatherModel.generateTemp(weatherInfo.main.minTemp)
-            maxTempLabel.text = WeatherModel.generateTemp(weatherInfo.main.maxTemp)
-
-            tempLabel.text = WeatherModel.generateTemp(weatherInfo.main.temp)
-            sensibleTempLabel.text = WeatherModel.generateTemp(weatherInfo.main.sensibleTemp)
-            humidityLabel.text = "\(weatherInfo.main.humidity)%"
-            pressureLabel.text = "\(weatherInfo.main.pressure)hPa"
-            windLabel.text = "\(weatherInfo.wind.speed)m/s"
+            detailsList.append(DetailsModel(key: "최저 기온", value: WeatherModel.generateTemp(weatherInfo.main.minTemp)))
+            detailsList.append(DetailsModel(key: "최고 기온", value: WeatherModel.generateTemp(weatherInfo.main.maxTemp)))
+            detailsList.append(DetailsModel(key: "체감 기온", value: WeatherModel.generateTemp(weatherInfo.main.sensibleTemp)))
+            detailsList.append(DetailsModel(key: "습도", value: "\(weatherInfo.main.humidity)%"))
+            detailsList.append(DetailsModel(key: "기압", value: "\(weatherInfo.main.pressure) hPa"))
+            detailsList.append(DetailsModel(key: "풍속", value: "\(weatherInfo.wind.speed) m/s"))
         }
     }
 }
 
 extension DetailsViewController {
-    typealias Item = Int
-    enum Section {
-        case main
-    }
-
     private func configureCollectionView() {
         // ui
-//        collectionView.backgroundColor = .white.withAlphaComponent(0.7)
-//        collectionView.layer.cornerRadius = 15
         collectionView.showsVerticalScrollIndicator = false
 
         // dataSource
-        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, _ in
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsInfoCell.identifier, for: indexPath) as? DetailsInfoCell else {
                 return nil
             }
+
+            cell.configure(itemIdentifier)
 
             return cell
         })
@@ -78,7 +70,8 @@ extension DetailsViewController {
                 header.configure(
                     CityModel.cities.first { $0.id == self.weatherInfo!.id }!.koreanName,
                     self.weatherInfo!.cityName,
-                    self.weatherInfo!.weather.first!.description
+                    self.weatherInfo!.weather.first!.description,
+                    WeatherModel.generateTemp(self.weatherInfo!.main.temp)
                 )
 
                 return header
@@ -90,7 +83,7 @@ extension DetailsViewController {
         // snapshot
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(sampleList, toSection: .main)
+        snapshot.appendItems(detailsList, toSection: .main)
         dataSource.apply(snapshot)
 
         // layout
@@ -100,15 +93,17 @@ extension DetailsViewController {
     private func configureLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let itemSpacing: CGFloat = 5
+        item.contentInsets = NSDirectionalEdgeInsets(top: itemSpacing, leading: itemSpacing, bottom: itemSpacing, trailing: itemSpacing)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
 
         let section = NSCollectionLayoutSection(group: group)
 
-        let footerHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50.0))
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50.0))
         let header = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: footerHeaderSize,
+            layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top)
         section.boundarySupplementaryItems = [header]
@@ -123,14 +118,16 @@ class DetailsInfoHeader: UICollectionReusableView {
     @IBOutlet var iconImageView: UIImageView!
     @IBOutlet var englishNameLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
+    @IBOutlet var tempLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
     }
 
-    func configure(_ koreanName: String, _ englishName: String, _ description: String) {
+    func configure(_ koreanName: String, _ englishName: String, _ description: String, _ temp: String) {
         koreanNameLabel.text = koreanName
         englishNameLabel.text = englishName
         descriptionLabel.text = description
+        tempLabel.text = temp
     }
 }

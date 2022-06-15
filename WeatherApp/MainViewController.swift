@@ -25,11 +25,11 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "전국 날씨"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.sizeToFit()
+//        self.navigationItem.title = "전국 날씨"
+//        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.sizeToFit()
 
-//        configureBackground()
+        configureBackground()
 
         requestWeatherForCities()
 
@@ -40,6 +40,7 @@ class MainViewController: UIViewController {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: "BG_default")
         backgroundImage.contentMode = .scaleAspectFill
+        backgroundImage.alpha = 0.75
         
         // create effect
         let effect = UIBlurEffect(style: .systemUltraThinMaterialLight)
@@ -51,6 +52,7 @@ class MainViewController: UIViewController {
         effectView.alpha = backgroundImage.alpha
         
         backgroundImage.addSubview(effectView)
+        
         view.insertSubview(backgroundImage, at: 0)
     }
 
@@ -59,8 +61,6 @@ class MainViewController: UIViewController {
         collectionView.delegate = self
 
         // ui
-//        collectionView.backgroundColor = .white.withAlphaComponent(0.7)
-//        collectionView.layer.cornerRadius = 15
         collectionView.showsVerticalScrollIndicator = false
 
         // dataSource
@@ -73,6 +73,19 @@ class MainViewController: UIViewController {
 
             return cell
         })
+        
+        // header
+        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
+            if kind == UICollectionView.elementKindSectionHeader {
+                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: WeatherHeader.identifier, for: indexPath) as? WeatherHeader else {
+                    return UICollectionReusableView()
+                }
+                
+                return header
+            } else {
+                return UICollectionReusableView()
+            }
+        }
 
         // snapshot
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
@@ -87,11 +100,19 @@ class MainViewController: UIViewController {
     private func configureLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.33))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 0, bottom: 2, trailing: 0)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.33))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
 
         let section = NSCollectionLayoutSection(group: group)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50.0))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top)
+        section.boundarySupplementaryItems = [header]
 
         return UICollectionViewCompositionalLayout(section: section)
     }
