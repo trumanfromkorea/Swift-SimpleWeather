@@ -9,6 +9,11 @@ import Foundation
 
 struct Server {
     static let apiKey = "190022c5e2d95c8cd9c30099308d857c"
+    static let imageUrl = "http://openweathermap.org/img/wn/"
+
+    static func getImageUrl(_ id: String) -> String {
+        return imageUrl + id + "@2x.png"
+    }
 
     static func getUrlWithCity(_ cityName: String) -> String {
         return "https://api.openweathermap.org/data/2.5/weather?q=\(cityName)&appid=\(apiKey)"
@@ -23,7 +28,7 @@ struct Server {
         params.removeLast()
 
         let url = "http://api.openweathermap.org/data/2.5/group?id=\(params)&units=metric&appid=\(apiKey)"
-        
+
         return url
     }
 }

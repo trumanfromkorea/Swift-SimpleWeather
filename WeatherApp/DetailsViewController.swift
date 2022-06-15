@@ -71,7 +71,8 @@ extension DetailsViewController {
                     CityModel.cities.first { $0.id == self.weatherInfo!.id }!.koreanName,
                     self.weatherInfo!.cityName,
                     self.weatherInfo!.weather.first!.description,
-                    WeatherModel.generateTemp(self.weatherInfo!.main.temp)
+                    WeatherModel.generateTemp(self.weatherInfo!.main.temp),
+                    self.weatherInfo!.weather.first!.icon
                 )
 
                 return header
@@ -124,10 +125,16 @@ class DetailsInfoHeader: UICollectionReusableView {
         super.awakeFromNib()
     }
 
-    func configure(_ koreanName: String, _ englishName: String, _ description: String, _ temp: String) {
+    func configure(_ koreanName: String, _ englishName: String, _ description: String, _ temp: String, _ imageID: String) {
+        setImage(imageID)
         koreanNameLabel.text = koreanName
         englishNameLabel.text = englishName
         descriptionLabel.text = description
         tempLabel.text = temp
+    }
+    
+    func setImage(_ id: String) {
+        let url = Server.getImageUrl(id)
+        iconImageView.setImageWithUrl(url)
     }
 }

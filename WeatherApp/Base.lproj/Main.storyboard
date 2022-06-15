@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -46,12 +47,6 @@
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sun.max.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="pbd-KK-r7g">
-                                                    <rect key="frame" x="148.5" y="29.5" width="83" height="83.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="pbd-KK-r7g" secondAttribute="height" id="QdQ-5P-cOo"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="44%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EkQ-FK-6EM">
                                                     <rect key="frame" x="324.5" y="59.5" width="42" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -64,9 +59,20 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="j7t-e4-vdI">
+                                                    <rect key="frame" x="180" y="61.5" width="20" height="20"/>
+                                                    <color key="color" name="AccentColor"/>
+                                                </activityIndicatorView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pbd-KK-r7g">
+                                                    <rect key="frame" x="148.5" y="30" width="83" height="83"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="pbd-KK-r7g" secondAttribute="height" id="QdQ-5P-cOo"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="EkQ-FK-6EM" secondAttribute="trailing" constant="20" id="2CS-T3-tFF"/>
+                                                <constraint firstItem="j7t-e4-vdI" firstAttribute="centerX" secondItem="pbd-KK-r7g" secondAttribute="centerX" id="2Jt-e4-r63"/>
                                                 <constraint firstItem="yK6-HJ-odg" firstAttribute="centerY" secondItem="Lyj-dN-fHK" secondAttribute="centerY" id="AO1-Zl-Pra"/>
                                                 <constraint firstItem="zaE-YS-WTE" firstAttribute="centerY" secondItem="Lyj-dN-fHK" secondAttribute="centerY" constant="-5" id="E8U-fy-mKt"/>
                                                 <constraint firstItem="zaE-YS-WTE" firstAttribute="leading" secondItem="Lyj-dN-fHK" secondAttribute="leading" constant="20" id="Ec3-QK-lPw"/>
@@ -74,6 +80,7 @@
                                                 <constraint firstItem="yK6-HJ-odg" firstAttribute="leading" secondItem="pbd-KK-r7g" secondAttribute="trailing" constant="30" id="Q09-Xz-LoY"/>
                                                 <constraint firstItem="m9q-4A-2Fv" firstAttribute="leading" secondItem="zaE-YS-WTE" secondAttribute="leading" id="aRX-Je-oIo"/>
                                                 <constraint firstItem="EkQ-FK-6EM" firstAttribute="leading" secondItem="yK6-HJ-odg" secondAttribute="trailing" constant="30" id="hn2-Gd-0Z6"/>
+                                                <constraint firstItem="j7t-e4-vdI" firstAttribute="centerY" secondItem="pbd-KK-r7g" secondAttribute="centerY" id="jMV-97-Q0m"/>
                                                 <constraint firstItem="m9q-4A-2Fv" firstAttribute="top" secondItem="zaE-YS-WTE" secondAttribute="bottom" constant="5" id="m9c-vR-DwR"/>
                                                 <constraint firstItem="pbd-KK-r7g" firstAttribute="top" secondItem="Lyj-dN-fHK" secondAttribute="top" constant="30" id="q5Z-5U-2l7"/>
                                                 <constraint firstItem="EkQ-FK-6EM" firstAttribute="centerY" secondItem="Lyj-dN-fHK" secondAttribute="centerY" id="qZl-r4-TFJ"/>
@@ -83,6 +90,8 @@
                                         <connections>
                                             <outlet property="englishNameLabel" destination="m9q-4A-2Fv" id="JNh-NB-bE5"/>
                                             <outlet property="humidityLabel" destination="EkQ-FK-6EM" id="wNm-jh-LHJ"/>
+                                            <outlet property="iconImageView" destination="pbd-KK-r7g" id="pYa-I6-kwv"/>
+                                            <outlet property="imageLoadingIndicator" destination="j7t-e4-vdI" id="NBy-Ng-0jk"/>
                                             <outlet property="koreanNameLabel" destination="zaE-YS-WTE" id="UvB-Gp-MTc"/>
                                             <outlet property="tempLabel" destination="yK6-HJ-odg" id="Ysy-S0-8gq"/>
                                         </connections>
@@ -93,8 +102,8 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="전국 날씨" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idz-kJ-8I1">
-                                            <rect key="frame" x="10" y="10" width="111" height="30"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                            <rect key="frame" x="10" y="10" width="128.5" height="30"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -286,7 +295,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="sun.max.fill" catalog="system" width="128" height="124"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -24,10 +24,6 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        self.navigationItem.title = "전국 날씨"
-//        navigationController?.navigationBar.prefersLargeTitles = true
-//        navigationController?.navigationBar.sizeToFit()
 
         configureBackground()
 
@@ -41,17 +37,6 @@ class MainViewController: UIViewController {
         backgroundImage.image = UIImage(named: "BG_default")
         backgroundImage.contentMode = .scaleAspectFill
         backgroundImage.alpha = 0.75
-        
-        // create effect
-        let effect = UIBlurEffect(style: .systemUltraThinMaterialLight)
-        let effectView = UIVisualEffectView(effect: effect)
-
-        // set boundry and alpha
-        effectView.frame = backgroundImage.bounds
-        effectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        effectView.alpha = backgroundImage.alpha
-        
-        backgroundImage.addSubview(effectView)
         
         view.insertSubview(backgroundImage, at: 0)
     }
