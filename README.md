@@ -34,7 +34,7 @@
 
 ## 첫번째 화면
 
-![Simulator Screen Shot - iPhone 13 Pro - 2022-06-15 at 19 12 33](https://user-images.githubusercontent.com/55919701/173806014-e449bf8d-500b-45c7-b3d3-802d8eb0dfa2.png)
+<img src="https://user-images.githubusercontent.com/55919701/173806014-e449bf8d-500b-45c7-b3d3-802d8eb0dfa2.png" width="25%" height="25%"> 
 
 - 20개 도시의 날씨정보를 받아오기 위해 API 호출 시 사용되는 url 에 모든 도시의 id 를 삽입했습니다.
 - 받아온 날씨 데이터를 모두 출력하기 위해 리스트 형태로 날씨 정보를 저장한 후 UICollectionView 를 이용해 화면에 출력했습니다.
@@ -44,12 +44,12 @@
 
 ### 스크롤 내렸을때
 
-![Simulator Screen Shot - iPhone 13 Pro - 2022-06-15 at 19 12 38](https://user-images.githubusercontent.com/55919701/173807047-5cae9eb6-ea90-4f4d-83be-d7cc7e0dbc1c.png)
+<img src="https://user-images.githubusercontent.com/55919701/173807047-5cae9eb6-ea90-4f4d-83be-d7cc7e0dbc1c.png" width="25%" height="25%"> 
 
 ## 두번째 화면
 
-![Simulator Screen Shot - iPhone 13 Pro - 2022-06-15 at 19 12 59](https://user-images.githubusercontent.com/55919701/173807138-abe08652-eb1a-4a8e-aebb-5d41024d6029.png)
-
+<img src="https://user-images.githubusercontent.com/55919701/173807138-abe08652-eb1a-4a8e-aebb-5d41024d6029.png" width="25%" height="25%">
+ 
 - 선택한 도시의 상세 날씨 정보를 출력하기 위해 첫번째 화면에서 사용된 데이터를 전달받았습니다.
 - 날씨 정보를 보기좋게 출력하기 위해 UICollectionView 를 이용해 화면에 출력했습니다.
 - 날씨 상세 정보는 임의로 순서를 지정해주었습니다.
@@ -58,9 +58,8 @@
 - 날씨 아이콘을 출력할때는 캐시 이미지를 활용했습니다.
 
 ### 스크롤 내렸을때
-
-![Simulator Screen Shot - iPhone 13 Pro - 2022-06-15 at 19 13 05](https://user-images.githubusercontent.com/55919701/173807654-4e8f6356-bbe4-430f-b730-0756dbe07ee6.png)
  
+<img src="https://user-images.githubusercontent.com/55919701/173807654-4e8f6356-bbe4-430f-b730-0756dbe07ee6.png" width="25%" height="25%"> 
 
 ## What I Learned
 
