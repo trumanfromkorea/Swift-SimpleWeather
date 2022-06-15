@@ -47,7 +47,7 @@ extension MainViewController {
     func requestWeatherForCities() {
         let url = Server.getUrlWithCities(cities)
         let semaphore = DispatchSemaphore(value: 0)
-        
+
         // api 요청
         URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, _, error in
             guard let data = data, error == nil
@@ -148,6 +148,7 @@ extension MainViewController: UICollectionViewDelegate {
 
         // section
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
 
         // header
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50.0))

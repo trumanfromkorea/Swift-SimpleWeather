@@ -15,7 +15,7 @@ class ImageCacheManager {
 }
 
 extension UIImageView {
-    // url 인자로 받아서 이미지 캐시
+    // url 인자로 받아서 이미지 로드 및 캐싱
     func setImageWithUrl(_ url: String) {
         // 캐시에 사용될 Key 값
         let cacheKey = NSString(string: url)
@@ -40,6 +40,7 @@ extension UIImageView {
                         if let data = data, let image = UIImage(data: data) {
                             // 이미지 캐싱
                             ImageCacheManager.shared.setObject(image, forKey: cacheKey)
+                            self.image = image
                         }
                     }
 

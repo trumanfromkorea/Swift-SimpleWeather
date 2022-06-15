@@ -17,6 +17,8 @@ class DetailsInfoCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        configureUIStyle()
     }
 
     // UIComponent 설정

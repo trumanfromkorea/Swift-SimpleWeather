@@ -28,6 +28,7 @@ class WeatherCell: UICollectionViewCell {
     // UIComponent 설정
     func configure(_ weather: WeatherModel) {
         setImage(weather.weather.first!.icon)
+        
         koreanNameLabel.text = CityModel.cities.first { $0.id == weather.id }?.koreanName
         englishNameLabel.text = weather.cityName
         tempLabel.text = WeatherModel.generateTemp(weather.main.temp)
