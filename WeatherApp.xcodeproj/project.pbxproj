@@ -115,17 +115,10 @@
 		0D14D8132857B4F700957313 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				0DB8536A2859DB920043E4FC /* ViewController */,
+				0DB853692859DB880043E4FC /* Model */,
 				0D14D8142857B4F700957313 /* AppDelegate.swift */,
 				0D14D8162857B4F700957313 /* SceneDelegate.swift */,
-				0DCCFE1B2857B5B900BA05EF /* MainViewController.swift */,
-				0DB853652859CD430043E4FC /* WeatherHeader.swift */,
-				0DB279AF285874DC005923BF /* ServerModel.swift */,
-				0DB853672859D1BF0043E4FC /* ImageModel.swift */,
-				0DB279B128587544005923BF /* WeatherModel.swift */,
-				0DCCFE1D2857B5CD00BA05EF /* DetailsViewController.swift */,
-				0D71A2B3285984D900FC9DBE /* DetailsInfoHeader.swift */,
-				0D82000A2858E998009F2786 /* DetailsInfoCell.swift */,
-				0DB279B5285892D3005923BF /* WeatherCell.swift */,
 				0D14D81A2857B4F700957313 /* Main.storyboard */,
 				0D14D81D2857B4F800957313 /* Assets.xcassets */,
 				0D14D81F2857B4F800957313 /* LaunchScreen.storyboard */,
@@ -149,6 +142,45 @@
 				0D14D8372857B4F800957313 /* WeatherAppUITestsLaunchTests.swift */,
 			);
 			path = WeatherAppUITests;
+			sourceTree = "<group>";
+		};
+		0DB853692859DB880043E4FC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0DB279AF285874DC005923BF /* ServerModel.swift */,
+				0DB853672859D1BF0043E4FC /* ImageModel.swift */,
+				0DB279B128587544005923BF /* WeatherModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0DB8536A2859DB920043E4FC /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0DB8536C2859DBA20043E4FC /* Details */,
+				0DB8536B2859DB9C0043E4FC /* Main */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0DB8536B2859DB9C0043E4FC /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				0DCCFE1B2857B5B900BA05EF /* MainViewController.swift */,
+				0DB853652859CD430043E4FC /* WeatherHeader.swift */,
+				0DB279B5285892D3005923BF /* WeatherCell.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		0DB8536C2859DBA20043E4FC /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				0DCCFE1D2857B5CD00BA05EF /* DetailsViewController.swift */,
+				0D71A2B3285984D900FC9DBE /* DetailsInfoHeader.swift */,
+				0D82000A2858E998009F2786 /* DetailsInfoCell.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

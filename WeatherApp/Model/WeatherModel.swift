@@ -7,6 +7,7 @@
 
 import Foundation
 
+// api 요청에 쓰일 도시 정보
 struct CityModel {
     var id: Int
     var koreanName: String
@@ -37,12 +38,19 @@ struct CityModel {
     ]
 }
 
-// 도시이름, 날씨아이콘, 현재기온, 현재습도
-// 체감기온, 최저기온, 최고기온, 기압, 풍속, 날씨 설명
+/*
+ - 필요 정보
+
+ 도시이름, 날씨아이콘, 현재기온, 현재습도
+ 체감기온, 최저기온, 최고기온, 기압, 풍속, 날씨 설명
+ */
+
+// api 응답 리스트
 struct WeatherResponse: Codable, Hashable {
     var list: [WeatherModel]
 }
 
+// 받아온 날씨 리스트 각 아이템 요소
 struct WeatherModel: Codable, Hashable {
     var id: Int
     var cityName: String
@@ -57,16 +65,18 @@ struct WeatherModel: Codable, Hashable {
         case main
         case wind
     }
-    
+
     static func == (lhs: WeatherModel, rhs: WeatherModel) -> Bool {
         return lhs.id == rhs.id
     }
-    
+
+    // 섭씨 표시
     static func generateTemp(_ temp: Double) -> String {
         return "\(Int(temp))°C"
     }
 }
 
+// 날씨의 weather 정보
 struct WeatherData: Codable, Hashable {
     var id: Int
     var main: String
@@ -74,6 +84,7 @@ struct WeatherData: Codable, Hashable {
     var icon: String
 }
 
+// 날씨의 main 정보
 struct MainData: Codable, Hashable {
     var temp: Double
     var sensibleTemp: Double
@@ -92,11 +103,12 @@ struct MainData: Codable, Hashable {
     }
 }
 
+// 날씨의 Wind 정보
 struct WindData: Codable, Hashable {
     var speed: Double
 }
 
-// DetailsCell 위한 인스턴스
+// Details 화면의 Cell 위한 인스턴스
 struct DetailsModel: Hashable {
     var key: String
     var value: String

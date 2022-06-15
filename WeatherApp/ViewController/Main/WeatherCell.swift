@@ -7,9 +7,11 @@
 
 import UIKit
 
+// Main 화면 CollectionView Cell
 class WeatherCell: UICollectionViewCell {
     static let identifier = "WeatherCell"
 
+    // IBOutlet
     @IBOutlet var koreanNameLabel: UILabel!
     @IBOutlet var englishNameLabel: UILabel!
     @IBOutlet var tempLabel: UILabel!
@@ -22,7 +24,8 @@ class WeatherCell: UICollectionViewCell {
 
         setUIStates()
     }
-
+    
+    // UIComponent 설정
     func configure(_ weather: WeatherModel) {
         setImage(weather.weather.first!.icon)
         koreanNameLabel.text = CityModel.cities.first { $0.id == weather.id }?.koreanName
@@ -30,29 +33,29 @@ class WeatherCell: UICollectionViewCell {
         tempLabel.text = WeatherModel.generateTemp(weather.main.temp)
         humidityLabel.text = "\(weather.main.humidity)%"
     }
-
+    
+    // 이미지 설정
     func setImage(_ id: String) {
         let url = Server.getImageUrl(id)
         iconImageView.setImageWithUrl(url)
     }
-
+    
+    // UI 설정
     func setUIStates() {
+        // 이미지 로딩 후 indicator 멈추기
         imageLoadingIndicator.hidesWhenStopped = true
 
-        // Apply rounded corners
+        // 둥근 모서리
         contentView.layer.cornerRadius = 15
         contentView.layer.masksToBounds = true
 
-        // Set masks to bounds to false to avoid the shadow
-        // from being clipped to the corner radius
         layer.cornerRadius = 15
         layer.masksToBounds = false
 
-        // create effect
+        // 배경 blur
         let effect = UIBlurEffect(style: .regular)
         let effectView = UIVisualEffectView(effect: effect)
 
-        // set boundry and alpha
         effectView.frame = contentView.bounds
         effectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         effectView.alpha = contentView.alpha

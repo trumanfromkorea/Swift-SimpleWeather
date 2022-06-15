@@ -9,38 +9,91 @@ import UIKit
 
 class MainViewController: UIViewController {
     static let identifier = "MainViewController"
-    static let storyboard = "Main"
+
+    var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
+    let cities = CityModel.cities
+    var weatherList = [WeatherModel]()
 
     typealias Item = WeatherModel
     enum Section {
         case main
     }
 
-    var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
-    let cities = CityModel.cities
-    var weatherList = [WeatherModel]()
-
+    // IBOutlet
     @IBOutlet var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureBackground()
-
         requestWeatherForCities()
-
         configureCollectionView()
     }
 
+    // Background 이미지 설정
     private func configureBackground() {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(named: "BG_default")
         backgroundImage.contentMode = .scaleAspectFill
         backgroundImage.alpha = 0.75
-        
+
         view.insertSubview(backgroundImage, at: 0)
     }
+}
 
+// MARK: - 날씨 api 요청
+
+extension MainViewController {
+    func requestWeatherForCities() {
+        let url = Server.getUrlWithCities(cities)
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        // api 요청
+        URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, _, error in
+            guard let data = data, error == nil
+            else {
+                print(">> API 요청 데이터 에러")
+                return
+            }
+
+            var responseData: WeatherResponse?
+
+            do {
+                responseData = try JSONDecoder().decode(WeatherResponse.self, from: data)
+            } catch {
+                print(">> Response decoding 에러 : \(error)")
+            }
+
+            guard let result = responseData else { return }
+
+            result.list.forEach { item in
+                self.weatherList.append(item)
+            }
+
+            semaphore.signal()
+
+        }).resume()
+
+        semaphore.wait()
+    }
+}
+
+// MARK: - CollectionView 설정
+
+extension MainViewController: UICollectionViewDelegate {
+    // CollectionView Item 터치 후 화면이동
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: DetailsViewController.storyboard, bundle: nil)
+
+        let vc = storyboard.instantiateViewController(withIdentifier: DetailsViewController.identifier) as! DetailsViewController
+        vc.title = "지역 날씨"
+
+        vc.weatherInfo = weatherList[indexPath.item]
+
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    // CollectionView 설정
     private func configureCollectionView() {
         // delegate
         collectionView.delegate = self
@@ -58,14 +111,14 @@ class MainViewController: UIViewController {
 
             return cell
         })
-        
+
         // header
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
             if kind == UICollectionView.elementKindSectionHeader {
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: WeatherHeader.identifier, for: indexPath) as? WeatherHeader else {
                     return UICollectionReusableView()
                 }
-                
+
                 return header
             } else {
                 return UICollectionReusableView()
@@ -82,16 +135,21 @@ class MainViewController: UIViewController {
         collectionView.collectionViewLayout = configureLayout()
     }
 
+    // CollectionView Layout
     private func configureLayout() -> UICollectionViewCompositionalLayout {
+        // item
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.33))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 0, bottom: 2, trailing: 0)
 
+        // group
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.33))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
 
+        // section
         let section = NSCollectionLayoutSection(group: group)
-        
+
+        // header
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50.0))
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
@@ -100,54 +158,5 @@ class MainViewController: UIViewController {
         section.boundarySupplementaryItems = [header]
 
         return UICollectionViewCompositionalLayout(section: section)
-    }
-}
-
-// MARK: - 날씨 api 관련
-
-extension MainViewController {
-    func requestWeatherForCities() {
-        let url = Server.getUrlWithCities(cities)
-        let semaphore = DispatchSemaphore(value: 0)
-
-        URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, _, error in
-            guard let data = data, error == nil
-            else {
-                print("something went wrong")
-                return
-            }
-
-            var responseData: WeatherResponse?
-
-            do {
-                responseData = try JSONDecoder().decode(WeatherResponse.self, from: data)
-            } catch {
-                print("error \(error)")
-            }
-
-            guard let result = responseData else { return }
-
-            result.list.forEach { item in
-                self.weatherList.append(item)
-            }
-
-            semaphore.signal()
-
-        }).resume()
-
-        semaphore.wait()
-    }
-}
-
-extension MainViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: DetailsViewController.storyboard, bundle: nil)
-
-        let vc = storyboard.instantiateViewController(withIdentifier: DetailsViewController.identifier) as! DetailsViewController
-        vc.title = "지역 날씨"
-        
-        vc.weatherInfo = weatherList[indexPath.item]
-
-        navigationController?.pushViewController(vc, animated: true)
     }
 }

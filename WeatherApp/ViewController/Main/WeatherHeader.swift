@@ -7,6 +7,7 @@
 
 import UIKit
 
+// Main 화면 CollectionView 헤더
 class WeatherHeader: UICollectionReusableView {
     static let identifier = "WeatherHeader"
 }

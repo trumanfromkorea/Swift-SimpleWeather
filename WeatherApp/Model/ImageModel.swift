@@ -8,16 +8,19 @@
 import Foundation
 import UIKit
 
+// 캐시 설정
 class ImageCacheManager {
     static let shared = NSCache<NSString, UIImage>()
     private init() {}
 }
 
 extension UIImageView {
+    // url 인자로 받아서 이미지 캐시
     func setImageWithUrl(_ url: String) {
-        let cacheKey = NSString(string: url) // 캐시에 사용될 Key 값
+        // 캐시에 사용될 Key 값
+        let cacheKey = NSString(string: url)
 
-        // 해당 Key 에 캐시이미지가 저장되어 있으면 이미지를 사용
+        // 해당 Key 에 대응하는 캐시가 존재하면 캐시이미지 사용
         if let cachedImage = ImageCacheManager.shared.object(forKey: cacheKey) {
             image = cachedImage
             return

@@ -12,7 +12,6 @@ class DetailsViewController: UIViewController {
     static let storyboard = "Main"
 
     var weatherInfo: WeatherModel?
-
     var detailsList = [DetailsModel]()
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
 
@@ -21,6 +20,7 @@ class DetailsViewController: UIViewController {
         case main
     }
 
+    // IBOutlet
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var tempLabel: UILabel!
 
@@ -32,21 +32,24 @@ class DetailsViewController: UIViewController {
         configureDetailsInfo()
         configureCollectionView()
     }
+}
 
+// MARK: - CollectionView 관련 설정들
+
+extension DetailsViewController {
+    // Details ColletionView 에 들어갈 데이터 삽입
     private func configureDetailsInfo() {
         if let weatherInfo = weatherInfo {
             detailsList.append(DetailsModel(key: "최저 기온", value: WeatherModel.generateTemp(weatherInfo.main.minTemp), imageName: "thermometer.sun.fill"))
             detailsList.append(DetailsModel(key: "최고 기온", value: WeatherModel.generateTemp(weatherInfo.main.maxTemp), imageName: "thermometer.snowflake"))
-            detailsList.append(DetailsModel(key: "체감 기온", value: WeatherModel.generateTemp(weatherInfo.main.sensibleTemp),
-                                           imageName: "thermometer"))
+            detailsList.append(DetailsModel(key: "체감 기온", value: WeatherModel.generateTemp(weatherInfo.main.sensibleTemp), imageName: "thermometer"))
             detailsList.append(DetailsModel(key: "습도", value: "\(weatherInfo.main.humidity)%", imageName: "humidity.fill"))
             detailsList.append(DetailsModel(key: "기압", value: "\(weatherInfo.main.pressure) hPa", imageName: "circle.dashed.inset.filled"))
             detailsList.append(DetailsModel(key: "풍속", value: "\(weatherInfo.wind.speed) m/s", imageName: "wind"))
         }
     }
-}
 
-extension DetailsViewController {
+    // CollectionView 설정
     private func configureCollectionView() {
         // ui
         collectionView.showsVerticalScrollIndicator = false
@@ -62,6 +65,7 @@ extension DetailsViewController {
             return cell
         })
 
+        // header
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
             if kind == UICollectionView.elementKindSectionHeader {
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailsInfoHeader.identifier, for: indexPath) as? DetailsInfoHeader else {
@@ -92,17 +96,22 @@ extension DetailsViewController {
         collectionView.collectionViewLayout = configureLayout()
     }
 
+    // CollectionView Layout
     private func configureLayout() -> UICollectionViewCompositionalLayout {
+        // item
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let itemSpacing: CGFloat = 5
         item.contentInsets = NSDirectionalEdgeInsets(top: itemSpacing, leading: itemSpacing, bottom: itemSpacing, trailing: itemSpacing)
 
+        // group
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.5))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
 
+        // section
         let section = NSCollectionLayoutSection(group: group)
 
+        // header
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50.0))
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
@@ -111,31 +120,5 @@ extension DetailsViewController {
         section.boundarySupplementaryItems = [header]
 
         return UICollectionViewCompositionalLayout(section: section)
-    }
-}
-
-class DetailsInfoHeader: UICollectionReusableView {
-    static let identifier = "DetailsInfoHeader"
-    @IBOutlet var koreanNameLabel: UILabel!
-    @IBOutlet var iconImageView: UIImageView!
-    @IBOutlet var englishNameLabel: UILabel!
-    @IBOutlet var descriptionLabel: UILabel!
-    @IBOutlet var tempLabel: UILabel!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    func configure(_ koreanName: String, _ englishName: String, _ description: String, _ temp: String, _ imageID: String) {
-        setImage(imageID)
-        koreanNameLabel.text = koreanName
-        englishNameLabel.text = englishName
-        descriptionLabel.text = description
-        tempLabel.text = temp
-    }
-    
-    func setImage(_ id: String) {
-        let url = Server.getImageUrl(id)
-        iconImageView.setImageWithUrl(url)
     }
 }
