@@ -49,10 +49,7 @@ class WeatherCell: UICollectionViewCell {
         // 둥근 모서리
         contentView.layer.cornerRadius = 15
         contentView.layer.masksToBounds = true
-
-        layer.cornerRadius = 15
-        layer.masksToBounds = false
-
+        
         // 배경 blur
         let effect = UIBlurEffect(style: .regular)
         let effectView = UIVisualEffectView(effect: effect)

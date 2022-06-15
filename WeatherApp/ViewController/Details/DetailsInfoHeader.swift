@@ -18,6 +18,12 @@ class DetailsInfoHeader: UICollectionReusableView {
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var tempLabel: UILabel!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        configureUIStyle()
+    }
+
     // UIComponent 설정
     func configure(_ koreanName: String, _ englishName: String, _ description: String, _ temp: String, _ imageID: String) {
         setImage(imageID)
@@ -31,5 +37,22 @@ class DetailsInfoHeader: UICollectionReusableView {
     func setImage(_ id: String) {
         let url = Server.getImageUrl(id)
         iconImageView.setImageWithUrl(url)
+    }
+
+    // header 모양 설정
+    func configureUIStyle() {
+        // 둥근 모서리
+        layer.cornerRadius = 15
+        layer.masksToBounds = true
+
+        // 배경 blur
+        let effect = UIBlurEffect(style: .regular)
+        let effectView = UIVisualEffectView(effect: effect)
+
+        effectView.frame = bounds
+        effectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        effectView.alpha = alpha
+
+        insertSubview(effectView, at: 0)
     }
 }

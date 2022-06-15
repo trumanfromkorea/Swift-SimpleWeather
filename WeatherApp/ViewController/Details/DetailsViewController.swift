@@ -27,10 +27,19 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.largeTitleDisplayMode = .never
-
+        configureBackground()
         configureDetailsInfo()
         configureCollectionView()
+    }
+    
+    // Background 이미지 설정
+    private func configureBackground() {
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "BG_default")
+        backgroundImage.contentMode = .scaleAspectFill
+        backgroundImage.alpha = 0.75
+
+        view.insertSubview(backgroundImage, at: 0)
     }
 }
 
@@ -110,7 +119,7 @@ extension DetailsViewController {
 
         // section
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0)
 
         // header
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(50.0))
