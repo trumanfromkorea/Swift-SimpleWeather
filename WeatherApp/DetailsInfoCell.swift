@@ -10,7 +10,8 @@ import UIKit
 class DetailsInfoCell: UICollectionViewCell {
     @IBOutlet var keyLabel: UILabel!
     @IBOutlet var valueLabel: UILabel!
-
+    @IBOutlet weak var detailsIcon: UIImageView!
+    
     static let identifier = "DetailsInfoCell"
 
     override func awakeFromNib() {
@@ -29,5 +30,6 @@ class DetailsInfoCell: UICollectionViewCell {
     func configure(_ details: DetailsModel) {
         keyLabel.text = details.key
         valueLabel.text = details.value
+        detailsIcon.image = UIImage(systemName: details.imageName)
     }
 }

@@ -100,4 +100,5 @@ struct WindData: Codable, Hashable {
 struct DetailsModel: Hashable {
     var key: String
     var value: String
+    var imageName: String
 }

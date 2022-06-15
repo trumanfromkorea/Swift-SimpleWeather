@@ -35,12 +35,13 @@ class DetailsViewController: UIViewController {
 
     private func configureDetailsInfo() {
         if let weatherInfo = weatherInfo {
-            detailsList.append(DetailsModel(key: "최저 기온", value: WeatherModel.generateTemp(weatherInfo.main.minTemp)))
-            detailsList.append(DetailsModel(key: "최고 기온", value: WeatherModel.generateTemp(weatherInfo.main.maxTemp)))
-            detailsList.append(DetailsModel(key: "체감 기온", value: WeatherModel.generateTemp(weatherInfo.main.sensibleTemp)))
-            detailsList.append(DetailsModel(key: "습도", value: "\(weatherInfo.main.humidity)%"))
-            detailsList.append(DetailsModel(key: "기압", value: "\(weatherInfo.main.pressure) hPa"))
-            detailsList.append(DetailsModel(key: "풍속", value: "\(weatherInfo.wind.speed) m/s"))
+            detailsList.append(DetailsModel(key: "최저 기온", value: WeatherModel.generateTemp(weatherInfo.main.minTemp), imageName: "thermometer.sun.fill"))
+            detailsList.append(DetailsModel(key: "최고 기온", value: WeatherModel.generateTemp(weatherInfo.main.maxTemp), imageName: "thermometer.snowflake"))
+            detailsList.append(DetailsModel(key: "체감 기온", value: WeatherModel.generateTemp(weatherInfo.main.sensibleTemp),
+                                           imageName: "thermometer"))
+            detailsList.append(DetailsModel(key: "습도", value: "\(weatherInfo.main.humidity)%", imageName: "humidity.fill"))
+            detailsList.append(DetailsModel(key: "기압", value: "\(weatherInfo.main.pressure) hPa", imageName: "circle.dashed.inset.filled"))
+            detailsList.append(DetailsModel(key: "풍속", value: "\(weatherInfo.wind.speed) m/s", imageName: "wind"))
         }
     }
 }

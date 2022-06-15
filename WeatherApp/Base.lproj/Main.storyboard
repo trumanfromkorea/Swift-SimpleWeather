@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -171,10 +172,27 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qyk-fy-xRP">
+                                                    <rect key="frame" x="172" y="15.5" width="30" height="27"/>
+                                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="U6z-ZQ-Edq"/>
+                                                        <constraint firstAttribute="width" constant="30" id="emM-88-tfO"/>
+                                                    </constraints>
+                                                    <imageReference key="image" image="humidity.fill" catalog="system" renderingMode="hierarchical-single">
+                                                        <hierarchicalColors>
+                                                            <color systemColor="labelColor"/>
+                                                            <color systemColor="secondaryLabelColor"/>
+                                                            <color systemColor="tertiaryLabelColor"/>
+                                                        </hierarchicalColors>
+                                                    </imageReference>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="mZQ-9h-flt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WS1-uc-rYd" secondAttribute="bottom" constant="20" id="GxW-77-rsW"/>
                                                 <constraint firstItem="WS1-uc-rYd" firstAttribute="top" secondItem="b8A-lC-I6O" secondAttribute="top" constant="15" id="KgE-p1-fGZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="qyk-fy-xRP" secondAttribute="trailing" constant="15" id="Mlx-VW-Arz"/>
+                                                <constraint firstItem="qyk-fy-xRP" firstAttribute="centerY" secondItem="WS1-uc-rYd" secondAttribute="centerY" id="Nrg-oL-vop"/>
                                                 <constraint firstAttribute="bottom" secondItem="mZQ-9h-flt" secondAttribute="bottom" constant="15" id="fhG-lb-J6T"/>
                                                 <constraint firstAttribute="trailing" secondItem="mZQ-9h-flt" secondAttribute="trailing" constant="15" id="jky-yt-ND4"/>
                                                 <constraint firstItem="WS1-uc-rYd" firstAttribute="leading" secondItem="b8A-lC-I6O" secondAttribute="leading" constant="15" id="r6y-3O-o4z"/>
@@ -183,6 +201,7 @@
                                         <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor"/>
                                         <size key="customSize" width="217" height="239"/>
                                         <connections>
+                                            <outlet property="detailsIcon" destination="qyk-fy-xRP" id="j2h-39-mg9"/>
                                             <outlet property="keyLabel" destination="WS1-uc-rYd" id="3rP-Oy-PFy"/>
                                             <outlet property="valueLabel" destination="mZQ-9h-flt" id="AFq-Cs-AAz"/>
                                         </connections>
@@ -295,11 +314,21 @@
         </scene>
     </scenes>
     <resources>
+        <image name="humidity.fill" catalog="system" width="128" height="98"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="tertiaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiarySystemGroupedBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
