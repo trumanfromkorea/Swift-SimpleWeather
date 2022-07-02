@@ -9,7 +9,7 @@ import Foundation
 
 // api 관련 모델
 struct Server {
-    static let apiKey = "190022c5e2d95c8cd9c30099308d857c"
+    static let apiKey = ""
     static let imageUrl = "http://openweathermap.org/img/wn/"
 
     // image id 에 따라 url 구성
